@@ -1,5 +1,37 @@
+body {
+    background-color: rgb(195, 227, 255);
+}
+
 .main_window {
     display: flex;
     flex-direction: column;
+    margin: auto;
     width: 300pt;
+    background-color: rgba(9, 78, 180, 0.301);
+    border-radius: 10pt;
+}
+
+#button {
+    width: 200pt;
+    align-self: center;
+    height: 30pt;
+    border-radius: 5pt;
+    font-size: 15pt;
+    margin: 20pt;
+}
+
+#input_field {
+    margin: 20pt;
+    height: 20pt;
+    font-size: 15pt;
+    border-radius: 3pt;
+}
+
+#weather_icon {
+    width: 30pt;
+    height: 30pt;
+}
+
+.main_window ul {
+    list-style-type: none;
 }

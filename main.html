@@ -6,9 +6,13 @@
     </head>
     <body>
         <div class="main_window">
-            <input id="input_field" type="text">
-            <small id="city"></small>
-            <button id="button" onclick="get_coords_by_city_name()">get coords</button>
+            <input id="input_field" type="text" value="samara">
+            <p id="weather_title"></p>
+            <ul id="info"></ul>
+            <p id="forecast_title"></p>
+            <ul id="forecast"></ul>
+            <img id="weather_icon" src=""/>
+            <button id="button" onclick="get_weather()">get weather</button>
         </div>
         <script src="./js/weather.js"></script>
     </body>
