@@ -30,8 +30,26 @@ body {
 #weather_icon {
     width: 30pt;
     height: 30pt;
+    visibility: hidden;
+    align-self: center;
+    margin-left: 10pt;
 }
 
 .main_window ul {
     list-style-type: none;
 }
+
+.title {
+    align-self: center;
+    font-size: 14pt;
+}
+
+#coords {
+    align-self: center;
+}
+
+#fc_cont {
+    display: flex;
+    flex-direction: row;
+}
+

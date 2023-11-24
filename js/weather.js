@@ -69,13 +69,21 @@ function makeRequest(method, url) {
 
 
 function append_data(data, id){
-    var list = document.getElementById('info');
+    var list = document.getElementById(id);
     var entry = document.createElement('li');
     entry.appendChild(document.createTextNode(data));
     list.appendChild(entry);
 }
 
 async function get_weather() {
+    document.getElementById("info").innerHTML = "";
+    document.getElementById("forecast").innerHTML = "";
+    document.getElementById("coords").innerHTML = "";
+    document.getElementById("weather_title").innerHTML = "";
+    document.getElementById("forecast_title").innerHTML = "";
+    document.getElementById('weather_icon').src = "";
+
+
     let city_name = document.getElementById('input_field').value;
 
     let coords_url = new URL('http://api.openweathermap.org/geo/1.0/direct');
@@ -85,7 +93,7 @@ async function get_weather() {
     let coords_data = await makeRequest("GET", coords_url);
     try {
       console.log(coords_data[0].lat+" - "+coords_data[0].lon)
-      append_data("Coordinates: "+coords_data[0].lat.toString()+" "+coords_data[0].lon.toString(), 'info');
+      document.getElementById('coords').innerHTML = "Coordinates: "+coords_data[0].lat.toString()+" "+coords_data[0].lon.toString();
     } catch {
       alert("can't find such city! try another one")
     }
@@ -100,9 +108,9 @@ async function get_weather() {
     let weather_data = await makeRequest("GET", weather_url)
     console.log(weather_data)
     document.getElementById('weather_title').innerHTML = "Current weather";
-    append_data(`description: ${weather_data.weather[0].description}`, 'info');
     append_data(`temp: ${weather_data.main.temp}`, 'info');
     append_data(`feels like: ${weather_data.main.feels_like}`, 'info');
+    append_data(`description: ${weather_data.weather[0].description}`, 'info');
     
     let forecast_url = new URL('https://api.openweathermap.org/data/2.5/forecast');
     forecast_url.searchParams.set('lat', coords_data[0].lat);
@@ -115,12 +123,13 @@ async function get_weather() {
 
 
     document.getElementById('forecast_title').innerHTML = "Forecast on next day";
-    append_data(`temp ${forecast_data.list[1].main.temp}`, "forecast");
-    append_data(`feels like ${forecast_data.list[1].main.feels_like}`, "forecast");
-    append_data(`description ${forecast_data.list[1].weather[0].description}`, "forecast");
+    append_data(`temp: ${forecast_data.list[1].main.temp}`, "forecast");
+    append_data(`feels like: ${forecast_data.list[1].main.feels_like}`, "forecast");
+    append_data(`description: ${forecast_data.list[1].weather[0].description}`, "forecast");
+    document.getElementById("weather_icon").style.visibility = "visible";
 
     let weather_icon = document.getElementById('weather_icon');
-    weather_icon.src = "http://openweathermap.org/img/w/10d.png";
+    weather_icon.src = `http://openweathermap.org/img/w/${forecast_data.list[1].weather[0].icon}.png`;
 
 
 }
