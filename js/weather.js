@@ -41,6 +41,16 @@
 
 // }
 
+async function makeRequestFetch(method, url) {
+  let response = await fetch(url, {method: method});
+  let data = await response.json();
+  if (response.ok) { 
+    return data
+  } else {
+    return []
+  }
+}
+
 
 function makeRequest(method, url) {
     return new Promise(function(resolve, reject) {
@@ -76,27 +86,42 @@ function append_data(data, id){
 }
 
 async function get_weather() {
-    document.getElementById("info").innerHTML = "";
-    document.getElementById("forecast").innerHTML = "";
-    document.getElementById("coords").innerHTML = "";
-    document.getElementById("weather_title").innerHTML = "";
-    document.getElementById("forecast_title").innerHTML = "";
-    document.getElementById('weather_icon').src = "";
+  document.getElementById("info").innerHTML = "";
+  document.getElementById("forecast").innerHTML = "";
+  document.getElementById("coords").innerHTML = "";
+  document.getElementById("weather_title").innerHTML = "";
+  document.getElementById("forecast_title").innerHTML = "";
+  document.getElementById('weather_icon').src = "";
+
+  let city_name = document.getElementById('input_field').value;
+
+  let coords_url = new URL('http://api.openweathermap.org/geo/1.0/direct');
+  coords_url.searchParams.set('q', city_name);
+  coords_url.searchParams.set('limit', '1');
+  coords_url.searchParams.set('appid', '577b3bd2eec54e5a84a1ae825e746783');
+  let coords_data = await makeRequestFetch("GET", coords_url);
+  try {
+    console.log(coords_data[0].lat+" - "+coords_data[0].lon)
+    document.getElementById('coords').innerHTML = "Coordinates: "+coords_data[0].lat.toString()+" "+coords_data[0].lon.toString();
+  } catch {
+    alert("can't find such city! try another one")
+  }
 
 
-    let city_name = document.getElementById('input_field').value;
 
-    let coords_url = new URL('http://api.openweathermap.org/geo/1.0/direct');
-    coords_url.searchParams.set('q', city_name);
-    coords_url.searchParams.set('limit', '1');
-    coords_url.searchParams.set('appid', '577b3bd2eec54e5a84a1ae825e746783');
-    let coords_data = await makeRequest("GET", coords_url);
-    try {
-      console.log(coords_data[0].lat+" - "+coords_data[0].lon)
-      document.getElementById('coords').innerHTML = "Coordinates: "+coords_data[0].lat.toString()+" "+coords_data[0].lon.toString();
-    } catch {
-      alert("can't find such city! try another one")
-    }
+    // let city_name = document.getElementById('input_field').value;
+
+    // let coords_url = new URL('http://api.openweathermap.org/geo/1.0/direct');
+    // coords_url.searchParams.set('q', city_name);
+    // coords_url.searchParams.set('limit', '1');
+    // coords_url.searchParams.set('appid', '577b3bd2eec54e5a84a1ae825e746783');
+    // let coords_data = await makeRequest("GET", coords_url);
+    // try {
+    //   console.log(coords_data[0].lat+" - "+coords_data[0].lon)
+    //   document.getElementById('coords').innerHTML = "Coordinates: "+coords_data[0].lat.toString()+" "+coords_data[0].lon.toString();
+    // } catch {
+    //   alert("can't find such city! try another one")
+    // }
     
 
     let weather_url = new URL('https://api.openweathermap.org/data/2.5/weather');
